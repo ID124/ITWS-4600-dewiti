@@ -90,6 +90,8 @@ ggplot(dataset, aes(x = class_attendance, y = grade)) +
 
 boxplot(dataset$grade, main = "Boxplot of Final Grade")
 
+sd(final_dataset$grade)
+
 # ----- 2.) Model Development -----
 
 ## Linear Regression
