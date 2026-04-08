@@ -160,41 +160,18 @@ knn_cm <- caret::confusionMatrix(
 knn_cm
 
 # RF metrics
-rf_pred <- as.factor(rf.predicted)
-rf_true <- as.factor(edu.test$grade)
+rf_pred <- predict(rf.model, edu.test)
+rf_actual <- edu.test$grade
 
-common_levels <- intersect(levels(rf_pred), levels(rf_true))
-
-rf_pred <- factor(rf_pred, levels = common_levels)
-rf_true <- factor(rf_true, levels = common_levels)
-
-rf_matrix <- table(
-  Actual = rf_true,
-  Predicted = rf_pred
-)
-
-rf_matrix
-
-n <- sum(rf_matrix)
-diag_vals <- diag(rf_matrix)
-row_sums <- rowSums(rf_matrix)
-col_sums <- colSums(rf_matrix)
-
-rf_accuracy <- sum(diag_vals) / n
-
-rf_precision <- diag_vals / col_sums
-rf_recall <- diag_vals / row_sums
-
-rf_f1 <- 2 * rf_precision * rf_recall /
-  (rf_precision + rf_recall)
+rmse_rf <- RMSE(rf_pred, rf_actual)
+mae_rf <- MAE(rf_pred, rf_actual)
+r2_rf  <- R2(rf_pred, rf_actual)
 
 rf_metrics <- data.frame(
   Model = "Random Forest",
-  Accuracy = rf_accuracy,
-  Precision = mean(rf_precision, na.rm = TRUE),
-  Recall = mean(rf_recall, na.rm = TRUE),
-  F1 = mean(rf_f1, na.rm = TRUE)
+  RMSE = rmse_rf,
+  MAE = mae_rf,
+  R2 = r2_rf
 )
 
 rf_metrics
-
